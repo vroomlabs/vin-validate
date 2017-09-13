@@ -1,5 +1,5 @@
 {
-  "name": "vin-validate",
+  "name": "@vroomlabs/vin-validate",
   "version": "1.0.0",
   "description": "Validate a VIN based on origin, checkdigit, and reported year.",
   "main": "index.js",

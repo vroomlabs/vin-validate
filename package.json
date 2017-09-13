@@ -4,6 +4,7 @@
   "description": "Validate a VIN based on origin, checkdigit, and reported year.",
   "main": "index.js",
   "scripts": {
+    "npm-push": "npm version patch && npm publish -tag latest --access public && git push",
     "test": "node ./node_modules/.bin/mocha ./test/*.js"
   },
   "repository": {

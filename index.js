@@ -97,27 +97,32 @@ module.exports = {
             reasons = [];
         }
 
-        // The vin must be a string, or we're done here.
-        if (!vin || typeof vin !== 'string') {
-            reasons.push('VIN is not a string.');
-            return false;
+        try {
+            // The vin must be a string, or we're done here.
+            if (!vin || typeof vin !== 'string') {
+                reasons.push('VIN is not a string.');
+                return false;
+            }
+
+            // This pattern *should*
+            if (!vin.match(vinPattern)) {
+                reasons.push('VIN fails pattern check.');
+                return false;
+            }
+
+            if (reportedYear && reportedYear >= 1995) {
+                var vinCheckDigit = module.exports.checkDigitFromVin(vin);
+                var vinActualDigit = vin[8].toUpperCase();
+
+                if (vin.match(vinNorthAmerica) && vinCheckDigit !== vinActualDigit)
+                    reasons.push('VIN check digit does not match (' + vinCheckDigit + ' !== ' + vinActualDigit + ').');
+
+                if (reportedYear && reportedYear !== module.exports.yearFromVin(vin, reportedYear))
+                    reasons.push('VIN year is incorrect.');
+            }
         }
-
-        // This pattern *should*
-        if (!vin.match(vinPattern)) {
-            reasons.push('VIN fails pattern check.');
-            return false;
-        }
-
-        if (reportedYear && reportedYear >= 1995) {
-            var vinCheckDigit = module.exports.checkDigitFromVin(vin);
-            var vinActualDigit = vin[8].toUpperCase();
-
-            if (vin.match(vinNorthAmerica) && vinCheckDigit !== vinActualDigit)
-                reasons.push('VIN check digit does not match (' + vinCheckDigit + ' !== ' + vinActualDigit + ').');
-
-            if (reportedYear && reportedYear !== module.exports.yearFromVin(vin, reportedYear))
-                reasons.push('VIN year is incorrect.');
+        catch (ex) {
+            reasons.push(ex.message);
         }
 
         return reasons.length === 0;

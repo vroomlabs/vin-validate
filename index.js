@@ -104,8 +104,10 @@ module.exports = {
         }
 
         // This pattern *should*
-        if (!vin.match(vinPattern))
+        if (!vin.match(vinPattern)) {
             reasons.push('VIN fails pattern check.');
+            return false;
+        }
 
         if (reportedYear && reportedYear >= 1995) {
             var vinCheckDigit = module.exports.checkDigitFromVin(vin);

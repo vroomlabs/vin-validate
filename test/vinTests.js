@@ -89,4 +89,10 @@ describe('Vin Validate', function () {
         should.equal(vinCheck('3FI6P0PU0ER395281', 2014, errors), false, 'Expected an error.');
         should.equal(errors[0], 'VIN fails pattern check.');
     });
+
+    it('should not blow up on short vins', function () {
+        var errors = [];
+        should.equal(vinCheck('SU', 2014, errors), false, 'Expected an error.');
+        should.equal(errors[0], 'VIN fails pattern check.');
+    });
 });
